@@ -8,7 +8,7 @@ from typing import Tuple
 import numpy as np
 
 def apply_effect(image: Image, resolution: Tuple[int, int]) -> Image:
-    # image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    image = image.transpose(Image.FLIP_TOP_BOTTOM)
     width, height = image.size
     target_width, target_height = resolution
     aspect_ratio = width / height
