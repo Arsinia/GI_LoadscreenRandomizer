@@ -8,7 +8,7 @@ This is what it looks like in game by default
 
 # How do I use it?
 #### Basic instructions
-Just put the pictures you want to see in a folder called "InputLoadingScreens" and run GI_LoadingScreen.exe or GI_LoadingScreen.py. Then just run the game and it'll work. If you change the images while the game is running, press F10 to reload.
+Just put the pictures you want to see in a folder called "InputLoadingScreens" and run GI_LoadingScreen.exe or GI_LoadingScreen.py. Also, put the file "dcf5ad8be031c5fc-ps_replace.txt" in the folder called "ShaderFixes" in your 3DMigoto folder. Then just run the game and it'll work. If you change the images while the game is running, press F10 to reload.
 
 #### Toggling Subfolders
 You can have multiple folders inside of "InputLoadingScreens" and running the program will search through all images in these folders. If you want to disable a folder, rename it to start with a hyphen "-" and rerun the program. This will prevent any images in this folder from being used as a loading screen.
