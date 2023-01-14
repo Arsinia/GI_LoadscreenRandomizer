@@ -1,7 +1,49 @@
 import os
 import glob
 import subprocess
-from PIL import Image
+from PIL import Image, ImageDraw
+from PIL import ImageFilter
+from PIL import ImageEnhance
+from typing import Tuple
+import numpy as np
+
+def apply_effect(image: Image, resolution: Tuple[int, int]) -> Image:
+    # image = image.transpose(Image.FLIP_TOP_BOTTOM)
+    width, height = image.size
+    target_width, target_height = resolution
+    aspect_ratio = width / height
+    target_aspect_ratio = target_width / target_height
+    if aspect_ratio > target_aspect_ratio:
+        # Image is wider than target resolution
+        new_height = int(target_width / aspect_ratio)
+        image = image.resize((target_width, new_height))
+        offset = (0, (target_height - new_height) // 2)
+    else:
+        # Image is taller than target resolution
+        new_width = int(target_height * aspect_ratio)
+        image = image.resize((new_width, target_height))
+        offset = ((target_width - new_width) // 2, 0)
+
+    # image.show()
+    # Add black bars
+    background = Image.new("RGBA", resolution, (0,0,0,1))
+    background.paste(image, offset)
+    # Create Gaussian Blur
+    background = background.filter(ImageFilter.GaussianBlur(radius=min(width,height)/8))
+    # alpha = background.split()[3]
+    # # Normalize the alpha values
+    # alpha = Image.eval(alpha, lambda a: 255 * a / 128)
+    # # Merge the alpha band back into the image
+    # background.putalpha(alpha)
+    background.paste(image, offset)
+    background = background.convert('RGBA')
+    color_layer = Image.new("RGBA", resolution, color_avg(image))
+    composite = Image.alpha_composite(color_layer, background)
+    return composite
+
+def color_avg(image: Image) -> Tuple[int, int, int]:
+    pixels = np.array(image)
+    return tuple(map(int, np.average(pixels, axis=(0, 1))))
 
 # Define the configuration file
 config_file = "config.txt"
@@ -50,18 +92,23 @@ for input_file in input_files:
         # Open the image using PIL
         im = Image.open(input_file)
 
-        # Crop and scale the image to fit the target resolution
-        # Ugh why isn't there a function to do this garbage for me
-        x_coeff = target_resolution[0] / im.width
-        y_coeff = target_resolution[1] / im.height
-        coeff = x_coeff if x_coeff > y_coeff else y_coeff
-        im = im.resize((round(im.width * coeff), round(im.height * coeff)), Image.BICUBIC)
-        left = (im.width - target_resolution[0]) / 2
-        top = (im.height - target_resolution[1]) / 2
-        right = (im.width + target_resolution[0]) / 2
-        bottom = (im.height + target_resolution[1]) / 2
-        im = im.crop((left, top, right, bottom))
-        im = im.transpose(Image.FLIP_TOP_BOTTOM)
+        if (False):
+
+            # Crop and scale the image to fit the target resolution
+            # Ugh why isn't there a function to do this garbage for me
+            x_coeff = target_resolution[0] / im.width
+            y_coeff = target_resolution[1] / im.height
+            coeff = x_coeff if x_coeff > y_coeff else y_coeff
+            im = im.resize((round(im.width * coeff), round(im.height * coeff)), Image.BICUBIC)
+            left = (im.width - target_resolution[0]) / 2
+            top = (im.height - target_resolution[1]) / 2
+            right = (im.width + target_resolution[0]) / 2
+            bottom = (im.height + target_resolution[1]) / 2
+            im = im.crop((left, top, right, bottom))
+            im = im.transpose(Image.FLIP_TOP_BOTTOM)
+
+        else:
+            im = apply_effect(image=im, resolution=target_resolution)
 
         # Save the output file
         im.save(output_file_png, 'PNG', srgb=False)
