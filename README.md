@@ -8,7 +8,7 @@ This is what it looks like in game by default
 
 # How do I use it?
 #### Basic instructions
-Just put the pictures you want to see in a folder called "InputLoadingScreens" and run GI_LoadingScreen.exe or GI_LoadingScreen.py. Also, put the file "dcf5ad8be031c5fc-ps_replace.txt" in the folder called "ShaderFixes" in your 3DMigoto folder. Then just run the game and it'll work. If you change the images while the game is running, press F10 to reload.
+Just put the pictures you want to see in a folder called "InputLoadingScreens" and run GI_LoadingScreen.exe or GI_LoadingScreen.py. Then just run the game and it'll work. If you change the images while the game is running, press F10 to reload.
 
 #### Toggling Subfolders
 You can have multiple folders inside of "InputLoadingScreens" and running the program will search through all images in these folders. If you want to disable a folder, rename it to start with a hyphen "-" and rerun the program. This will prevent any images in this folder from being used as a loading screen.
@@ -16,7 +16,7 @@ You can have multiple folders inside of "InputLoadingScreens" and running the pr
 #### Options
 You can configure the resolution of the pictures by editing config.txt. Set the first two numbers to the width and height of your monitor and it'll resize the outputs automatically for you. When you change the resolution, you will need to delete all files in "OutputLoadingScreens" to force it to use the new size.
 
-You can toggle showing the loading bar, region icons, and display text in the LSMod.ini file. Open it in a text editor and set the first 3 options to whatever you want (0 to show, 1 to skip). 
+You can toggle showing the loading UI in the LSMod.ini file. Open it in a text editor and set the first 3 options to whatever you want (0 to show, 1 to skip). 
 
 #### Required Files
 Most mods you download will have all of the files needed present. Also if you download from the releases, all of the files will be present. If you want to make sure, you need [texconv.exe](https://github.com/Microsoft/DirectXTex/wiki/Texconv), the LSMod.ini file, and config.txt in the same folder as the main executable.
