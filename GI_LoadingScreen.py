@@ -39,6 +39,10 @@ def apply_effect(image: Image, resolution: Tuple[int, int]) -> Image:
     background = background.convert('RGBA')
     color_layer = Image.new("RGBA", resolution, color_avg(image))
     composite = Image.alpha_composite(color_layer, background)
+    composite_array = composite.load()
+    # for y in range(4):
+    #     for x in range(4):
+    #         composite_array[x, y] = (composite_array[x, y][0], composite_array[x, y][1], composite_array[x, y][2], 127)
     return composite
 
 def color_avg(image: Image) -> Tuple[int, int, int]:
@@ -129,6 +133,7 @@ with open(ini_file, "w") as f:
     for i in range(len(input_files)):
         f.write(f"else if $is_load_prev && $curr_img == {i}\n")
         f.write(f"	this = ResourceLS.{i}\n")
+    f.write("endif\n")
     f.write("endif\n")
     for i, output_file_dds in enumerate(output_files_dds):
         f.write(f"[ResourceLS.{i}]\n")
